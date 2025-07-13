@@ -1,4 +1,4 @@
-package com.cicd.jenkins_project;
+package com.cicd;
 
 import java.util.Collections;
 

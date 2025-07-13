@@ -1,4 +1,4 @@
-package com.cicd;
+package com.cicd.apis;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -7,6 +7,7 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello CI/CD!";
+    	System.out.println("run");
+    	return "Hello CI/CD!";
     }
 }
