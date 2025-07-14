@@ -31,12 +31,30 @@ pipeline {
             }
         }
 
-        stage('Run') {
+       stage('Run') {
     steps {
         powershell '''
-        Start-Process -FilePath "java" -ArgumentList "-jar", "target/jenkins_project-0.0.1-SNAPSHOT.jar" -RedirectStandardOutput "app.log" -RedirectStandardError "error.log" -NoNewWindow
-        Start-Sleep -Seconds 30
+        Write-Host "⏳ Starting Spring Boot app in background..."
 
+        # Kill any previous instance on port 8082
+        $portInUse = Get-NetTCPConnection -LocalPort 8082 -ErrorAction SilentlyContinue
+        if ($portInUse) {
+            Write-Host "⚠️ Port 8082 is in use. Trying to stop previous process..."
+            Stop-Process -Id ($portInUse.OwningProcess) -Force
+            Start-Sleep -Seconds 5
+        }
+
+        # Start app in background
+        Start-Process -FilePath "java" `
+            -ArgumentList "-jar", "target/jenkins_project-0.0.1-SNAPSHOT.jar" `
+            -RedirectStandardOutput "spring.log" `
+            -RedirectStandardError "spring-error.log" `
+            -NoNewWindow
+
+        # Wait for app to start
+        Start-Sleep -Seconds 35
+
+        # Check health
         try {
             $response = Invoke-WebRequest -Uri http://localhost:8082 -UseBasicParsing -TimeoutSec 10
             if ($response.StatusCode -eq 200) {
@@ -52,6 +70,7 @@ pipeline {
         '''
     }
 }
+
 
         
         
