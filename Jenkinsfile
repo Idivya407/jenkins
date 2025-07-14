@@ -42,15 +42,15 @@ pipeline {
                 // Health check (change URL if needed)
                 powershell '''
                 try {
-                    $response = Invoke-WebRequest -Uri http://localhost:9090 -UseBasicParsing -TimeoutSec 10
+                    $response = Invoke-WebRequest -Uri http://localhost:8082 -UseBasicParsing -TimeoutSec 10
                     if ($response.StatusCode -eq 200) {
-                        Write-Host "✅ Spring Boot app is UP on port 9090"
+                        Write-Host "✅ Spring Boot app is UP on port 8082"
                     } else {
                         Write-Error "❌ Spring Boot app returned status: $($response.StatusCode)"
                         exit 1
                     }
                 } catch {
-                    Write-Error "❌ Spring Boot app is not reachable on http://localhost:9090"
+                    Write-Error "❌ Spring Boot app is not reachable on http://localhost:8082"
                     exit 1
                 }
                 '''
