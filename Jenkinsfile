@@ -7,27 +7,27 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url : 'https://github.com/vimandi/jenkins.git'
+                git branch: 'main', url: 'https://github.com/vimandi/jenkins.git'
             }
         }
         stage('Build') {
             steps {
-                'mvn clean compile'
+                bat 'mvn clean compile'
             }
         }
         stage('Test') {
             steps {
-                'mvn test'
+                bat 'mvn test'
             }
         }
         stage('Package') {
             steps {
-                'mvn package'
+                bat 'mvn package'
             }
         }
         stage('Run') {
             steps {
-                'nohup java -jar target/jenkins_project-0.0.1-SNAPSHOT.jar &'
+                bat 'nohup java -jar target/jenkins_project-0.0.1-SNAPSHOT.jar &'
             }
         }
     }
