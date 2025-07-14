@@ -12,7 +12,7 @@ public class JenkinsProjectApplication {
 		//SpringApplication.run(JenkinsProjectApplication.class, args);
 	    SpringApplication app = new SpringApplication(JenkinsProjectApplication.class);
 
-	     app.setDefaultProperties(Collections.singletonMap("server.port", "9090")); // comment this out
+	     //app.setDefaultProperties(Collections.singletonMap("server.port", "9090")); // comment this out
 	     app.run(args);
 
 	}
