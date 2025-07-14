@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Run') {
             steps {
-                bat 'nohup java -jar target/jenkins_project-0.0.1-SNAPSHOT.jar &'
+                bat 'start "" java -jar target/jenkins_project-0.0.1-SNAPSHOT.jar'
             }
         }
     }
