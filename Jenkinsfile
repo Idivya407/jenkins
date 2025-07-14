@@ -29,8 +29,7 @@ pipeline {
         stage('Run') {
     steps {
         bat 'start "" java -jar target/jenkins_project-0.0.1-SNAPSHOT.jar'
-        bat 'timeout /t 60' // Wait 60 seconds for app to start
-
+        powershell 'Start-Sleep -Seconds 30'
         powershell '''
         try {
             $response = Invoke-WebRequest -Uri http://localhost:9090 -UseBasicParsing -TimeoutSec 10
@@ -46,6 +45,8 @@ pipeline {
         }
         '''
     }
+}
+
 }
 
         
