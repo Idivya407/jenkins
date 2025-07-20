@@ -49,7 +49,7 @@ pipeline {
 
                     for (int i = 0; i < maxRetries; i++) {
                         def status = powershell(
-                            script: "(Invoke-WebRequest -Uri http://localhost:${PORT} -UseBasicParsing).StatusCode",
+                            script: "(Invoke-WebRequest -Uri http://localhost:${PORT}/ -UseBasicParsing).StatusCode",
                             returnStdout: true
                         ).trim()
 
