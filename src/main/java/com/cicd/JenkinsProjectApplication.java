@@ -1,7 +1,5 @@
 package com.cicd;
 
-import java.util.Collections;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +11,7 @@ public class JenkinsProjectApplication {
 	    SpringApplication app = new SpringApplication(JenkinsProjectApplication.class);
 
 	     //app.setDefaultProperties(Collections.singletonMap("server.port", "9090")); // comment this out
-	     app.run(args);
+	     app.run();
 
 	}
 
