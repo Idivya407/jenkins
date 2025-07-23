@@ -38,36 +38,39 @@ pipeline {
         }
 
         stage('Run') {
-            steps {
-                script {
-                    echo "🚀 Starting Spring Boot app on port ${PORT}..."
-                    bat "start /B java -jar ${JAR} --server.port=${PORT} > spring.log 2>&1"
+    steps {
+        script {
+            echo "🚀 Starting Spring Boot app on port ${PORT}..."
+            // Start the app in the background and redirect logs
+            bat "start /B java -jar ${JAR} --server.port=${PORT} > spring.log 2>&1"
 
-                    def maxRetries = 10
-                    def delay = 3
-                    def success = false
+            def maxRetries = 10
+            def delay = 3
+            def success = false
 
-                    for (int i = 0; i < maxRetries; i++) {
-                        def status = powershell(
-                            script: "(Invoke-WebRequest -Uri http://localhost:${PORT}/hello -UseBasicParsing).StatusCode",
-                            returnStdout: true
-                        ).trim()
+            for (int i = 0; i < maxRetries; i++) {
+                def status = powershell(
+                    script: "(Invoke-WebRequest -Uri http://localhost:${PORT}/hello -UseBasicParsing).StatusCode",
+                    returnStdout: true
+                ).trim()
 
-                        if (status == '200') {
-                            echo "✅ App is running and reachable!"
-                            success = true
-                            break
-                        }
-
-                        echo "🔍 App not ready (attempt ${i + 1}/${maxRetries}), retrying in ${delay}s..."
-                        sleep time: delay, unit: 'SECONDS'
-                    }
-
-                    if (!success) {
-                        error("❌ App did not start in time on port ${PORT}")
-                    }
+                if (status == '200') {
+                    echo "✅ App is running and reachable!"
+                    success = true
+                    break
                 }
+
+                echo "❗ Got status: ${status} (expected 200)"
+                echo "🔍 App not ready (attempt ${i + 1}/${maxRetries}), retrying in ${delay}s..."
+                sleep time: delay, unit: 'SECONDS'
+            }
+
+            if (!success) {
+                error("❌ App did not start successfully on port ${PORT} within ${maxRetries * delay} seconds.")
             }
         }
+    }
+}
+
     }
 }
