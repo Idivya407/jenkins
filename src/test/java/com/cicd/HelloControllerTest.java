@@ -8,6 +8,7 @@ class HelloControllerTest {
     @Test
     void testHelloEndpoint() {
         String response = "Hello CI/CD!";
+        //new code
         assertThat(response).isEqualTo("Hello CI/CD!");
     }
 }
